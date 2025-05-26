@@ -1,8 +1,12 @@
+import ChatbotButton from "./ChatbotButton";
 
 
 export default function ProductionOrderForm() {
   return (
     <div className="max-w-7xl mx-auto p-6 bg-blue-100 rounded-lg shadow-xl">
+
+      <ChatbotButton />
+
       <h2 className="text-2xl font-bold mb-6 text-center text-blue-900">Orden de Producción</h2>
 
       {/* Encabezado */}
