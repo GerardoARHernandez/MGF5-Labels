@@ -12,7 +12,9 @@ const ProductionOrdersDisplay = () => {
     const getCurrentOrders = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch(`https://systemweb.ddns.net/StatusProd/API1/ListStatusProd`);
+        const response = await fetch(`https://systemweb.ddns.net/StatusProd/API1/ListStatusProd`, {
+          cache: 'no-store' // Evitar caché del navegador
+        });
         
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -32,7 +34,7 @@ const ProductionOrdersDisplay = () => {
     getCurrentOrders();
     
     // Actualizar datos cada minuto
-    const interval = setInterval(getCurrentOrders, 60000);
+    const interval = setInterval(getCurrentOrders, 30000);
     return () => clearInterval(interval);
   }, []);
 
