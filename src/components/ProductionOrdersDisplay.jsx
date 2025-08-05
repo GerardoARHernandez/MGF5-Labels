@@ -12,14 +12,7 @@ const ProductionOrdersDisplay = () => {
     const getCurrentOrders = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch('https://systemweb.ddns.net/StatusProd/API1/ListStatusProd',
-          //   https://cors-anywhere.herokuapp.com{ 
-        //   headers: {
-        //     'X-Requested-With': 'XMLHttpRequest',
-        //     'Origin': window.location.origin
-        //   }
-        // }
-      );
+        const response = await fetch(`https://systemweb.ddns.net/StatusProd/API1/ListStatusProd&${Date.now()}`);
         
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -174,16 +167,16 @@ const ProductionOrdersDisplay = () => {
       <div className="bg-white rounded-lg shadow-lg overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gray-100 text-2xl">
+            <thead className="bg-gray-100">
               <tr>
-                <th className="px-8 py-6 text-left text-2xl font-bold text-gray-700">Cliente</th>
-                <th className="px-8 py-6 text-left text-2xl font-bold text-gray-700">Millares</th>
-                <th className="px-8 py-6 text-left text-2xl font-bold text-gray-700">F_Entrega</th>
-                <th className="px-8 py-6 text-left text-2xl font-bold text-gray-700">Estado</th>
-                <th className="px-8 py-6 text-left text-2xl font-bold text-gray-700">Días Transcurridos</th>
+                <th className="px-8 py-6 text-left text-3xl font-bold text-gray-700">Cliente</th>
+                <th className="px-8 py-6 text-left text-3xl font-bold text-gray-700">Millares</th>
+                <th className="px-8 py-6 text-left text-3xl font-bold text-gray-700">F_Entrega</th>
+                <th className="px-8 py-6 text-left text-3xl font-bold text-gray-700">Estado</th>
+                <th className="px-8 py-6 text-left text-3xl font-bold text-gray-700">Días Transcurridos</th>
               </tr>
             </thead>
-            <tbody className='text-xl'>
+            <tbody className='text-2xl'>
               {paginatedData.map((order, index) => (
                 <tr 
                   key={index} 
@@ -191,21 +184,21 @@ const ProductionOrdersDisplay = () => {
                     index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
                   } hover:bg-blue-50 transition-colors duration-200`}
                 >
-                  <td className="px-8 py-6 text-xl font-semibold text-gray-900">
+                  <td className="px-8 py-6 text-2xl font-semibold text-gray-900">
                     {order.Nombre}
                   </td>
-                  <td className="px-8 py-6 text-xl text-gray-700 font-medium">
+                  <td className="px-8 py-6 text-2xl text-gray-700 font-medium">
                     {order.Millares} millares
                   </td>
-                  <td className="px-8 py-6 text-xl text-gray-700 font-medium">
+                  <td className="px-8 py-6 text-2xl text-gray-700 font-medium">
                     {formatApiDate(order.F_Entrega)}
                   </td>
                   <td className="px-8 py-6">
-                    <span className={`inline-flex px-4 py-2 rounded-full text-lg font-semibold ${getStatusColor(order.Estado)}`}>
+                    <span className={`inline-flex px-4 py-2 rounded-full text-xl font-semibold ${getStatusColor(order.Estado)}`}>
                       {order.Estado}
                     </span>
                   </td>
-                  <td className={`px-8 py-6 text-xl ${getDaysColor(order.DiasTranscurridos)}`}>
+                  <td className={`px-8 py-6 text-2xl ${getDaysColor(order.DiasTranscurridos)}`}>
                     {order.DiasTranscurridos} días
                   </td>
                 </tr>
