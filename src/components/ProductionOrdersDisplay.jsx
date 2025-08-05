@@ -12,7 +12,7 @@ const ProductionOrdersDisplay = () => {
     const getCurrentOrders = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch(`https://systemweb.ddns.net/StatusProd/API1/ListStatusProd&${Date.now()}`);
+        const response = await fetch(`https://systemweb.ddns.net/StatusProd/API1/ListStatusProd`);
         
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
