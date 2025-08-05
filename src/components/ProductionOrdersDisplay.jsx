@@ -136,9 +136,9 @@ const ProductionOrdersDisplay = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="min-h-screen bg-gray-50 p-9">
       {/* Header */}
-      <div className="bg-green-600 text-white p-8 rounded-lg shadow-lg mb-8">
+      <div className="bg-green-600 text-white p-4 rounded-lg shadow-lg mb-8">
         <div className="flex justify-between items-center">
           <div>
             <h1 className="text-6xl font-bold">Órdenes de Producción Activas</h1>
@@ -174,7 +174,7 @@ const ProductionOrdersDisplay = () => {
       <div className="bg-white rounded-lg shadow-lg overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gray-100">
+            <thead className="bg-gray-100 text-2xl">
               <tr>
                 <th className="px-8 py-6 text-left text-2xl font-bold text-gray-700">Cliente</th>
                 <th className="px-8 py-6 text-left text-2xl font-bold text-gray-700">Millares</th>
@@ -183,7 +183,7 @@ const ProductionOrdersDisplay = () => {
                 <th className="px-8 py-6 text-left text-2xl font-bold text-gray-700">Días Transcurridos</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className='text-xl'>
               {paginatedData.map((order, index) => (
                 <tr 
                   key={index} 
