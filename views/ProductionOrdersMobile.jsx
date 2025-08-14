@@ -37,17 +37,6 @@ const ProductionOrdersMobile = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Cambiar página cada 10 segundos
-  useEffect(() => {
-    if (ordersData.length === 0) return;
-    
-    const interval = setInterval(() => {
-      setCurrentPage((prev) => (prev + 1) % Math.ceil(ordersData.length / 10));
-    }, 10000);
-
-    return () => clearInterval(interval);
-  }, [ordersData]);
-
   // Actualizar hora cada segundo
   useEffect(() => {
     const interval = setInterval(() => {
@@ -105,6 +94,13 @@ const ProductionOrdersMobile = () => {
     (currentPage + 1) * itemsPerPage
   );
 
+  // Manejar cambio de página
+  const goToPage = (page) => {
+    if (page >= 0 && page < pageCount) {
+      setCurrentPage(page);
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50 p-4 flex items-center justify-center">
@@ -142,22 +138,70 @@ const ProductionOrdersMobile = () => {
         </div>
       </div>
 
-      {/* Paginación */}
-      <div className="mb-4 flex justify-center">
-        <div className="flex space-x-1">
-          {Array.from({ length: pageCount }).map((_, index) => (
-            <div
-              key={index}
-              className={`w-3 h-3 rounded-full ${
-                index === currentPage ? 'bg-green-600' : 'bg-gray-300'
+      {/* Controles de paginación */}
+      <div className="mb-4 flex justify-between items-center">
+        <button 
+          onClick={() => goToPage(currentPage - 1)}
+          disabled={currentPage === 0}
+          className={`px-4 py-2 rounded-lg ${currentPage === 0 ? 'bg-gray-300 text-gray-500' : 'bg-green-600 text-white'}`}
+        >
+          Anterior
+        </button>
+        
+        <div className="flex items-center space-x-2">
+          {Array.from({ length: Math.min(5, pageCount) }).map((_, index) => {
+            // Mostrar páginas cercanas a la actual
+            let pageToShow;
+            if (pageCount <= 5) {
+              pageToShow = index;
+            } else if (currentPage < 3) {
+              pageToShow = index;
+            } else if (currentPage > pageCount - 4) {
+              pageToShow = pageCount - 5 + index;
+            } else {
+              pageToShow = currentPage - 2 + index;
+            }
+
+            return (
+              <button
+                key={pageToShow}
+                onClick={() => goToPage(pageToShow)}
+                className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                  currentPage === pageToShow ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700'
+                }`}
+              >
+                {pageToShow + 1}
+              </button>
+            );
+          })}
+          
+          {pageCount > 5 && currentPage < pageCount - 3 && (
+            <span className="mx-1">...</span>
+          )}
+          
+          {pageCount > 5 && currentPage < pageCount - 3 && (
+            <button
+              onClick={() => goToPage(pageCount - 1)}
+              className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                currentPage === pageCount - 1 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700'
               }`}
-            />
-          ))}
+            >
+              {pageCount}
+            </button>
+          )}
         </div>
+        
+        <button 
+          onClick={() => goToPage(currentPage + 1)}
+          disabled={currentPage === pageCount - 1}
+          className={`px-4 py-2 rounded-lg ${currentPage === pageCount - 1 ? 'bg-gray-300 text-gray-500' : 'bg-green-600 text-white'}`}
+        >
+          Siguiente
+        </button>
       </div>
 
       {/* Lista de órdenes en formato tarjeta */}
-      <div className="space-y-3">
+      <div className="space-y-3 mb-4">
         {paginatedData.map((order, index) => (
           <div key={index} className="bg-white rounded-lg shadow-md p-4 border-l-4 border-green-600">
             <div className="flex justify-between items-start">
@@ -183,8 +227,13 @@ const ProductionOrdersMobile = () => {
         ))}
       </div>
 
+      {/* Indicador de página actual */}
+      <div className="mb-4 text-center text-gray-600">
+        Página {currentPage + 1} de {pageCount}
+      </div>
+
       {/* Footer simplificado */}
-      <div className="mt-6 grid grid-cols-2 gap-3">
+      <div className="mt-4 grid grid-cols-2 gap-3">
         <div className="bg-green-600 text-white p-3 rounded-lg text-center">
           <div className="text-xl font-bold">{ordersData.length}</div>
           <div className="text-xs">Órdenes</div>
@@ -202,8 +251,10 @@ const ProductionOrdersMobile = () => {
           <div className="text-xs">Atención</div>
         </div>
         <div className="bg-purple-600 text-white p-3 rounded-lg text-center">
-          <div className="text-xl font-bold">Pág. {currentPage + 1}</div>
-          <div className="text-xs">de {pageCount}</div>
+          <div className="text-xl font-bold">
+            {ordersData.reduce((sum, order) => sum + parseInt(order.Millares), 0)}
+          </div>
+          <div className="text-xs">Millares totales</div>
         </div>
       </div>
     </div>
