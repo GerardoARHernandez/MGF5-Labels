@@ -7,31 +7,6 @@ const ProductionOrdersDisplay = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // // Nuevo diseño para móviles
-  const MobileOrderCard = ({ order }) => (
-    <div className="bg-white rounded-lg shadow-md p-4 mb-4 border-l-4 border-green-600">
-      <div className="flex justify-between items-start">
-        <div>
-          <h3 className="text-lg font-bold text-gray-800">{order.Nombre}</h3>
-            <div className="text-sm text-gray-600 mt-1">
-              <span className="font-semibold">Millares:</span> {order.Millares}
-            </div>
-            <div className="text-sm text-gray-600">
-              <span className="font-semibold">F. Entrega:</span> {formatApiDate(order.F_Entrega)}
-            </div>
-        </div>
-        <div className="text-right">
-          <span className={`inline-block px-2 py-1 rounded-full text-xs font-semibold ${getStatusColor(order.Estado)}`}>
-            {order.Estado}
-          </span>
-          <div className={`mt-1 text-sm ${getDaysColor(order.DiasTranscurridos)}`}>
-            {order.DiasTranscurridos} días
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
   // Obtener datos de la API
   useEffect(() => {
     const getCurrentOrders = async () => {
@@ -133,46 +108,40 @@ const ProductionOrdersDisplay = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 p-4 md:p-8 flex items-center justify-center">
-        <div className="text-xl md:text-2xl">Cargando datos de producción...</div>
+      <div className="min-h-screen bg-gray-50 p-8 flex items-center justify-center">
+        <div className="text-2xl">Cargando datos de producción...</div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 p-4 md:p-8 flex items-center justify-center">
-        <div className="text-xl md:text-2xl text-red-600">Error: {error}</div>
+      <div className="min-h-screen bg-gray-50 p-8 flex items-center justify-center">
+        <div className="text-2xl text-red-600">Error: {error}</div>
       </div>
     );
   }
 
   if (ordersData.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-50 p-4 md:p-8 flex items-center justify-center">
-        <div className="text-xl md:text-2xl">No hay órdenes de producción activas</div>
+      <div className="min-h-screen bg-gray-50 p-8 flex items-center justify-center">
+        <div className="text-2xl">No hay órdenes de producción activas</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-8 lg:p-9">
+    <div className="min-h-screen bg-gray-50 p-9">
       {/* Header */}
-      <div className="bg-green-600 text-white p-3 md:p-4 rounded-lg shadow-lg mb-6 md:mb-8">
-        <div className="flex flex-col md:flex-row justify-between items-center">
-          <div className="mb-4 md:mb-0 text-center md:text-left">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold">
-              Órdenes de Producción Activas
-            </h1>
-            <p className="hidden md:block text-sm sm:text-base md:text-xl lg:text-2xl mt-1 md:mt-2 opacity-90">
-              Sistema de Monitoreo en Tiempo Real
-            </p>
+      <div className="bg-green-600 text-white p-4 rounded-lg shadow-lg mb-8">
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-6xl font-bold">Órdenes de Producción Activas</h1>
+            <p className="text-2xl mt-2 opacity-90">Sistema de Monitoreo en Tiempo Real</p>
           </div>
-          <div className="text-center md:text-right">
-            <div className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-wider">
-              MGF5
-            </div>
-            <div className="text-sm sm:text-base md:text-xl lg:text-2xl mt-1 md:mt-2">
+          <div className="text-right">
+            <div className="text-8xl font-bold tracking-wider">MGF5</div>
+            <div className="text-2xl mt-2">
               {formatTime(currentTime)}
             </div>
           </div>
@@ -180,115 +149,88 @@ const ProductionOrdersDisplay = () => {
       </div>
 
       {/* Información de fecha y página */}
-        {/* Versión móvil (nuevo diseño) */}
-        <div className="md:hidden">
-          <div className="mb-4 flex justify-between items-center">
-            <div className="text-sm md:text-base lg:text-xl text-gray-600">
-              {formatDate(currentTime)}
-            </div>
-            <div className="flex space-x-1">
-              {Array.from({ length: pageCount }).map((_, index) => (
-                <div
-                  key={index}
-                  className={`w-2 h-2 rounded-full ${
-                    index === currentPage ? 'bg-green-600' : 'bg-gray-300'
-                  }`}
-                />
-              ))}
-            </div>
+      <div className="flex justify-between items-center mb-6">
+        <div className="text-xl text-gray-600">
+          {formatDate(currentTime)}
         </div>
-
-        {paginatedData.map((order, index) => (
-          <MobileOrderCard key={index} order={order} />
-        ))}
+        <div className="flex space-x-2">
+          {Array.from({ length: pageCount }).map((_, index) => (
+            <div
+              key={index}
+              className={`w-4 h-4 rounded-full ${
+                index === currentPage ? 'bg-green-600' : 'bg-gray-300'
+              }`}
+            />
+          ))}
+        </div>
       </div>
 
-      {/* Versión desktop (tabla original pero con modificaciones) */}
-      <div className="hidden md:block">
-        {/* Información de fecha y página */}
-        <div className="flex justify-between items-center mb-6">
-          <div className="text-xl text-gray-600">
-            {formatDate(currentTime)}
-          </div>
-          <div className="flex space-x-2">
-            {Array.from({ length: pageCount }).map((_, index) => (
-              <div
-                key={index}
-                className={`w-4 h-4 rounded-full ${
-                  index === currentPage ? 'bg-green-600' : 'bg-gray-300'
-                }`}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* Tabla de órdenes (modificada según la imagen) */}
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-gray-100">
-                <tr>
-                  <th className="px-8 py-6 text-left text-3xl font-bold text-gray-700">Cliente</th>
-                  <th className="px-8 py-6 text-left text-3xl font-bold text-gray-700">Millares</th>
-                  <th className="px-8 py-6 text-left text-3xl font-bold text-gray-700">F. Entrega</th>
-                  <th className="px-6 py-4 text-left text-3xl font-bold text-gray-700">Estado</th>
-                  <th className="px-6 py-4 text-left text-3xl font-bold text-gray-700">Días Transcurridos</th>
+      {/* Tabla de órdenes */}
+      <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-gray-100">
+              <tr>
+                <th className="px-8 py-6 text-left text-3xl font-bold text-gray-700">Cliente</th>
+                <th className="px-8 py-6 text-left text-3xl font-bold text-gray-700">Millares</th>
+                <th className="px-8 py-6 text-left text-3xl font-bold text-gray-700">F_Entrega</th>
+                <th className="px-8 py-6 text-left text-3xl font-bold text-gray-700">Estado</th>
+                <th className="px-8 py-6 text-left text-3xl font-bold text-gray-700">Días Transcurridos</th>
+              </tr>
+            </thead>
+            <tbody className='text-2xl'>
+              {paginatedData.map((order, index) => (
+                <tr 
+                  key={index} 
+                  className={`border-b border-gray-200 ${
+                    index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
+                  } hover:bg-blue-50 transition-colors duration-200`}
+                >
+                  <td className="px-8 py-6 text-2xl font-semibold text-gray-900">
+                    {order.Nombre}
+                  </td>
+                  <td className="px-8 py-6 text-2xl text-gray-700 font-medium">
+                    {order.Millares} millares
+                  </td>
+                  <td className="px-8 py-6 text-2xl text-gray-700 font-medium">
+                    {formatApiDate(order.F_Entrega)}
+                  </td>
+                  <td className="px-8 py-6">
+                    <span className={`inline-flex px-4 py-2 rounded-full text-xl font-semibold ${getStatusColor(order.Estado)}`}>
+                      {order.Estado}
+                    </span>
+                  </td>
+                  <td className={`px-8 py-6 text-2xl ${getDaysColor(order.DiasTranscurridos)}`}>
+                    {order.DiasTranscurridos} días
+                  </td>
                 </tr>
-              </thead>
-              <tbody className='text-2xl'>
-                {paginatedData.map((order, index) => (
-                  <tr 
-                    key={index} 
-                    className={`border-b border-gray-200 ${
-                      index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
-                    } border-b border-gray-200 bg-white hover:bg-blue-50 transition-colors duration-200`}
-                  >
-                    <td className="px-8 py-6 text-2xl font-semibold text-gray-900">
-                      {order.Nombre}
-                    </td>
-                    <td className="px-8 py-6 text-2xl text-gray-700 font-medium">
-                      {order.Millares} Millares
-                    </td>
-                    <td className="px-8 py-6 text-2xl text-gray-700 font-medium">
-                      {formatApiDate(order.F_Entrega)}
-                    </td>
-                    <td className="px-8 py-6 text-2xl text-gray-700 font-medium">
-                      <span className={`inline-flex px-4 py-2 rounded-full text-xl font-semibold ${getStatusColor(order.Estado)}`}>
-                        {order.Estado}
-                      </span>
-                    </td>
-                    <td className={`px-8 py-6 text-2xl text-gray-700 font-medium ${getDaysColor(order.DiasTranscurridos)}`}>
-                      {order.DiasTranscurridos}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
 
       {/* Footer con estadísticas */}
-      <div className="mt-4 md:mt-6 lg:mt-8 grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 md:gap-6">
-        <div className="bg-green-600 text-white p-2 sm:p-3 md:p-4 lg:p-6 rounded-lg text-center">
-          <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold">{ordersData.length}</div>
-          <div className="text-xs sm:text-sm md:text-base lg:text-lg">Órdenes Activas</div>
+      <div className="mt-8 grid grid-cols-4 gap-6">
+        <div className="bg-green-600 text-white p-6 rounded-lg text-center">
+          <div className="text-3xl font-bold">{ordersData.length}</div>
+          <div className="text-lg">Órdenes Activas</div>
         </div>
-        <div className="bg-blue-600 text-white p-2 sm:p-3 md:p-4 lg:p-6 rounded-lg text-center">
-          <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold">
+        <div className="bg-blue-600 text-white p-6 rounded-lg text-center">
+          <div className="text-3xl font-bold">
             {ordersData.filter(order => order.Status === 'EN').length}
           </div>
-          <div className="text-xs sm:text-sm md:text-base lg:text-lg">Entregadas</div>
+          <div className="text-lg">Entregadas</div>
         </div>
-        <div className="bg-yellow-600 text-white p-2 sm:p-3 md:p-4 lg:p-6 rounded-lg text-center">
-          <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold">
+        <div className="bg-yellow-600 text-white p-6 rounded-lg text-center">
+          <div className="text-3xl font-bold">
             {ordersData.filter(order => parseInt(order.DiasTranscurridos) > 3).length}
           </div>
-          <div className="text-xs sm:text-sm md:text-base lg:text-lg">Requieren Atención</div>
+          <div className="text-lg">Requieren Atención</div>
         </div>
-        <div className="bg-purple-600 text-white p-2 sm:p-3 md:p-4 lg:p-6 rounded-lg text-center">
-          <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold">Página {currentPage + 1}</div>
-          <div className="text-xs sm:text-sm md:text-base lg:text-lg">de {pageCount}</div>
+        <div className="bg-purple-600 text-white p-6 rounded-lg text-center">
+          <div className="text-3xl font-bold">Página {currentPage + 1}</div>
+          <div className="text-lg">de {pageCount}</div>
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
-import { Routes, Route } from "react-router-dom"
-import ProductionOrderForm from "../views/ProductionOrderForm"
-import ProductionOrdersDisplay from "../views/ProductionOrdersDisplay"
+import { Routes, Route } from "react-router-dom";
+import ProductionOrderForm from "../views/ProductionOrderForm";
+import ProductionOrdersDisplay from "../views/ProductionOrdersDisplay";
+import ProductionOrdersMobile from "../views/ProductionOrdersMobile";
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
         </main>}
       />
       <Route path="/orders" element={<ProductionOrdersDisplay />} />
+      <Route path="/ordersMobile" element={<ProductionOrdersMobile />} />
     </Routes>
       
     </>
