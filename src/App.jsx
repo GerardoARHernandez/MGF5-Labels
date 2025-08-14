@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom"
-import ProductionOrderForm from "./components/ProductionOrderForm"
-import ProductionOrdersDisplay from "./components/ProductionOrdersDisplay"
+import ProductionOrderForm from "../views/ProductionOrderForm"
+import ProductionOrdersDisplay from "../views/ProductionOrdersDisplay"
 
 
 function App() {

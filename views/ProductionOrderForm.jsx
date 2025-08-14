@@ -1,4 +1,4 @@
-import ChatbotButton from "./ChatbotButton";
+import ChatbotButton from "../src/components/ChatbotButton";
 
 
 export default function ProductionOrderForm() {
